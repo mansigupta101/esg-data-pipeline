@@ -1,5 +1,4 @@
 """
-lambda_function.py
 
 AWS Lambda entry point. Deploy this behind an S3 event trigger on the
 raw-data bucket: whenever a new file lands in s3://<raw-bucket>/incoming/,

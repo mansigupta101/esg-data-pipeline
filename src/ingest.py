@@ -1,24 +1,42 @@
 """
-ingest.py
+Step 1 in the pipeline: Download raw source data and prepare it for the QA/QC stage.
 
-Step 1 of the pipeline: pulls raw source data and prepares it for the
-QA/QC stage. In production this file would run inside AWS Lambda,
-triggered by an S3 PUT event on the raw data bucket. Locally, it reads
-from disk to simulate that trigger so the pipeline can be tested without
-live AWS credentials.
-
-Data source: Our World in Data CO2 & GHG dataset (github.com/owid/co2-data).
-Used as a public stand-in for corporate/portfolio-level emissions data,
-since real MRV disclosures are not freely available. Countries here
-represent a hypothetical lending/investment portfolio, analogous to how
-a bank's risk function would track emissions exposure across counterparties.
+Script to load emissions data from OWID CO2 & GHG dataset (github.com/owid/co2-data), 
+filter it down to 10 countries (which is used as a stand-in 
+portfolio-of-reporting-entities in this project), and 
+prepare the filtered dataset for QA/QC step.
 """
 
 import pandas as pd
 from pathlib import Path
+import urllib.request
 
-# Hypothetical "portfolio" of reporting entities (countries standing in
-# for counterparties / investees in a bank's exposure book).
+
+"""
+------------ Download raw data from source ------------------
+"""
+RAW_DATA_URL = "https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv"
+
+def download_raw(raw_path):
+    """
+    Download the raw OWID dataset if it isn't already on disk.
+    Skips the download if the file already exists, so re-runs don't
+    re-fetch a 14MB file every time.
+    """
+    raw_path = Path(raw_path)
+    if raw_path.exists():
+        return raw_path
+    raw_path.parent.mkdir(parents=True, exist_ok=True)
+    urllib.request.urlretrieve(RAW_DATA_URL, raw_path)
+    return raw_path
+
+    
+"""
+Hypothetical portfolio of reporting entities (countries standing in for counterparties/investees in a bank's exposure book).
+
+------------ Preparing data for QC/QC --------------------
+"""
+
 PORTFOLIO = [
     "Norway", "Sweden", "Denmark", "Germany", "United Kingdom",
     "United States", "China", "India", "Brazil", "Netherlands",
@@ -32,29 +50,33 @@ COLUMNS = [
 ]
 
 START_YEAR = 2000
-END_YEAR = 2023  # 2024 excluded: GDP not yet published for most entities
+END_YEAR = 2023 
 
 
-def load_raw(raw_path: Path) -> pd.DataFrame:
+def load_raw(raw_path):
     """Load the full raw dataset from disk."""
     return pd.read_csv(raw_path)
 
 
-def filter_portfolio(df: pd.DataFrame) -> pd.DataFrame:
-    """Restrict to the tracked portfolio, relevant columns, and year range."""
+def filter_portfolio(df):
+    """Subset to the defined portfolio, relevant columns, and year range."""
     df = df[df["country"].isin(PORTFOLIO)]
     df = df[(df["year"] >= START_YEAR) & (df["year"] <= END_YEAR)]
     df = df[COLUMNS].reset_index(drop=True)
     return df
 
 
-def run(raw_path: Path, landing_path: Path) -> pd.DataFrame:
-    """Full ingestion step: load, filter, write landing file."""
+def run(raw_path, landing_path):
+    """Complete ingestion pipeline: download (if needed), load, filter, write landing file."""
+    raw_path = Path(raw_path)
+    landing_path = Path(landing_path)
+    download_raw(raw_path)
     df = load_raw(raw_path)
     df = filter_portfolio(df)
     landing_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(landing_path, index=False)
     return df
+
 
 
 if __name__ == "__main__":

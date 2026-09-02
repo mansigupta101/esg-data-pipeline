@@ -1,7 +1,6 @@
 """
-test_qc_checks.py
-
 Unit tests for the QA/QC rules. Run with: pytest tests/
+
 """
 
 import sys

@@ -1,15 +1,7 @@
 """
-qc_checks.py
-
 Step 2 of the pipeline: data quality assurance and control.
 
-Every record is checked against a set of rules. Records that fail any
-rule are written to the errors table with a reason code, rather than
-silently dropped or silently passed through — this mirrors how a risk
-data function needs traceability on *why* a record was rejected, not
-just that it was.
-
-Checks implemented:
+Script to implement following data checks:
   - Schema check      : required columns present and correctly typed
   - Completeness check: null values in required fields
   - Range check        : implausible values (e.g. negative emissions)
@@ -23,22 +15,20 @@ REQUIRED_FIELDS = ["country", "year", "co2", "total_ghg"]
 YOY_JUMP_THRESHOLD = 0.5  # flag if a single-year change exceeds 50%
 
 
-def check_schema(df: pd.DataFrame) -> pd.Series:
+def check_schema(df):
     """True where a row has all required fields present (non-null)."""
     return df[REQUIRED_FIELDS].notna().all(axis=1)
 
 
-def check_range(df: pd.DataFrame) -> pd.Series:
+def check_range(df):
     """True where emissions values are physically plausible (non-negative)."""
     return (df["co2"].fillna(0) >= 0) & (df["total_ghg"].fillna(0) >= 0)
 
 
-def check_yoy_consistency(df: pd.DataFrame) -> pd.Series:
+def check_yoy_consistency(df):
     """
     True where a country's year-over-year change in co2 is within a
-    plausible range. Large jumps often indicate a reporting break or
-    methodology change rather than a real-world event, and are worth
-    a human review rather than automatic inclusion.
+    plausible range.
     """
     df = df.sort_values(["country", "year"])
     pct_change = df.groupby("country")["co2"].pct_change().abs()
@@ -46,23 +36,25 @@ def check_yoy_consistency(df: pd.DataFrame) -> pd.Series:
     return flags.reindex(df.index)
 
 
-def completeness_score(df: pd.DataFrame) -> float:
+def completeness_score(df):
     """Share of non-null cells across the full table, 0-1."""
     return round(1 - df.isna().mean().mean(), 4)
 
 
-def run(landing_path: Path, processed_path: Path, errors_path: Path) -> dict:
-    df = pd.read_csv(landing_path)
+def run(landing_path, processed_path, errors_path):
+    landing_path = Path(landing_path)
+    processed_path = Path(processed_path)
+    errors_path = Path(errors_path)
 
+    df = pd.read_csv(landing_path)
     schema_ok = check_schema(df)
     range_ok = check_range(df)
     yoy_ok = check_yoy_consistency(df)
-
     passed = schema_ok & range_ok & yoy_ok
     clean = df[passed].copy()
     rejected = df[~passed].copy()
 
-    # Attach a reason code so rejects are actionable, not just discarded
+    """ Reason code placed to make rejects actionable, and not just discard them """
     reasons = []
     for idx in rejected.index:
         r = []

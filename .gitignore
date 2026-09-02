@@ -3,3 +3,8 @@ __pycache__/
 .pytest_cache/
 data/raw/owid-co2-data.csv
 data/raw/portfolio_landing.csv
+.ipynb_checkpoints/
+.DS_Store
+.ipynb_checkpoints/
+.DS_Store
+Documentation.pages

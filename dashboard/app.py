@@ -1,8 +1,8 @@
 """
-app.py
-
-Plotly-Dash dashboard reading the KPI outputs produced by src/kpi.py.
+Script to create plotly-Dash dashboard, reading the KPI outputs produced by src/kpi.py.
 Run with: python dashboard/app.py, then open http://127.0.0.1:8050
+
+To install plotly dash use: 'pip install dash plotly'
 
 Panels:
   1. Total CO2 by entity, latest year (portfolio exposure ranking)
