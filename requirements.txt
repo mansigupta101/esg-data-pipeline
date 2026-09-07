@@ -3,3 +3,4 @@ boto3>=1.34
 dash>=2.17
 plotly>=5.20
 pytest>=8.0
+requests>=2.31

@@ -5,14 +5,14 @@ Script to implement following data checks:
   - Schema check      : required columns present and correctly typed
   - Completeness check: null values in required fields
   - Range check        : implausible values (e.g. negative emissions)
-  - Consistency check  : year-over-year jump beyond a sane threshold
+  - Consistency check  : year-over-year jump beyond a legible threshold
 """
 
 import pandas as pd
 from pathlib import Path
 
 REQUIRED_FIELDS = ["country", "year", "co2", "total_ghg"]
-YOY_JUMP_THRESHOLD = 0.5  # flag if a single-year change exceeds 50%
+YOY_JUMP_THRESHOLD = 0.1  # flag if a single-year change exceeds 50%
 
 
 def check_schema(df):
@@ -41,11 +41,28 @@ def completeness_score(df):
     return round(1 - df.isna().mean().mean(), 4)
 
 
-def run(landing_path, processed_path, errors_path):
+def validity_by_entity(df, passed):
+    """
+    Share of records per entity that passed ALL QA/QC checks (schema,
+    range, and YoY consistency), distinct from completeness_score,
+    which only measures missing values.
+    """
+    return (
+        df.assign(passed=passed)
+        .groupby("country")["passed"]
+        .mean()
+        .round(4)
+        .reset_index(name="validity_score")
+    )
+   
+
+
+def run(landing_path, processed_path, errors_path, validity_path):
     landing_path = Path(landing_path)
     processed_path = Path(processed_path)
     errors_path = Path(errors_path)
-
+    validity_path = Path(validity_path)
+ 
     df = pd.read_csv(landing_path)
     schema_ok = check_schema(df)
     range_ok = check_range(df)
@@ -53,7 +70,10 @@ def run(landing_path, processed_path, errors_path):
     passed = schema_ok & range_ok & yoy_ok
     clean = df[passed].copy()
     rejected = df[~passed].copy()
-
+ 
+    validity_path.parent.mkdir(parents=True, exist_ok=True)
+    validity_by_entity(df, passed).to_csv(validity_path, index=False)
+ 
     """ Reason code placed to make rejects actionable, and not just discard them """
     reasons = []
     for idx in rejected.index:
@@ -66,26 +86,29 @@ def run(landing_path, processed_path, errors_path):
             r.append("yoy_jump_exceeds_threshold")
         reasons.append(";".join(r))
     rejected["reject_reason"] = reasons
-
+ 
     processed_path.parent.mkdir(parents=True, exist_ok=True)
     errors_path.parent.mkdir(parents=True, exist_ok=True)
     clean.to_csv(processed_path, index=False)
     rejected.to_csv(errors_path, index=False)
-
+ 
     summary = {
         "total_records": len(df),
         "passed": len(clean),
         "rejected": len(rejected),
         "completeness_score": completeness_score(df),
+        "overall_validity_score": round(float(passed.mean()), 4),
     }
     return summary
-
-
+ 
+ 
 if __name__ == "__main__":
     base = Path(__file__).resolve().parent.parent
     summary = run(
         landing_path=base / "data/raw/portfolio_landing.csv",
         processed_path=base / "data/processed/portfolio_clean.csv",
         errors_path=base / "data/errors/portfolio_rejects.csv",
+        validity_path=base / "data/processed/kpis/kpi_validity_by_entity.csv",
     )
     print(summary)
+ 

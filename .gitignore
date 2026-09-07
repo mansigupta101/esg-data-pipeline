@@ -8,3 +8,6 @@ data/raw/portfolio_landing.csv
 .ipynb_checkpoints/
 .DS_Store
 Documentation.pages
+.virtual_documents/
+data/raw/portfolio_landing_api.csv
+*.png
