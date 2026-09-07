@@ -1,9 +1,8 @@
 # ESG Emissions Data Pipeline & Quality Framework
 
-A compact ETL pipeline that ingests emissions/GDP data, runs automated
-QA/QC, computes portfolio-level ESG KPIs, and serves them through an
-interactive dashboard — built as a scoped demo of the kind of data
-value chain used in bank ESG/risk reporting functions.
+A compact ETL pipeline that ingests emissions/GDP data, runs automated QA/QC, 
+computes portfolio-level ESG KPIs, and serves them through an interactive dashboard. 
+Built as a scoped demo of a data value chain used in portfolio risk exposure reporting functions.
 
 ## Data sources
 
@@ -51,16 +50,16 @@ Raw data (OWID CSV or World Bank API)
 | YoY % change | Year-over-year emissions trend, ±10% flagged on-chart |
 | Portfolio total GHG | Aggregate GHG across the tracked portfolio, over time |
 | Data completeness score | Share of non-null fields per entity |
-| Data validity score | Share of records per entity passing *all* QA/QC checks — distinct from completeness, since a field can be non-null and still be invalid |
+| Data validity score | Share of records per entity passing *all* QA/QC checks; different from completeness score, as a field can be non-null and still be invalid |
 
 ## QA/QC checks
 
 - **Schema check** — required fields (`country`, `year`, `co2`, `total_ghg`) present
 - **Range check** — no physically implausible values (e.g. negative emissions)
-- **Consistency check** — year-over-year change beyond 10% is flagged for review (chosen deliberately strict to demonstrate the mechanism — real historical volatility in this portfolio tops out around 18%)
+- **Consistency check** — year-over-year change beyond 10% is flagged for review (chosen deliberately strict to demonstrate the data quality assurance mechanism, real historical volatility in this portfolio tops out around 18%)
 - **Completeness & validity scores** — both computed and surfaced as their own KPIs
 
-## Running locally
+## To Run locally
 
 ```bash
 pip install -r requirements.txt
