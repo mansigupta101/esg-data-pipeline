@@ -36,7 +36,7 @@ Raw data (OWID CSV or World Bank API)
 - `src/api_ingest.py` — same output shape, pulled live from the World Bank API instead
 - `src/qc_checks.py` — schema, range, and year-over-year consistency checks; computes both a **completeness** score (missing values) and a **validity** score (rows that passed every check) per entity
 - `src/kpi.py` — portfolio KPIs from QA-passed data, in pandas
-- `src/db.py` — the same KPIs recomputed in **SQL** (SQLite), including a window-function version of the YoY calculation, cross-checked against the pandas output
+- `src/db.py` — the same KPIs recomputed in **SQL** (SQLite), including LAG() (a built-in window-function) for YoY calculation, cross-checked against the pandas output
 - `dashboard/app.py` — interactive Plotly-Dash dashboard (year/country filters, validity threshold shown on-chart)
 - `tests/test_qc_checks.py` — unit tests for the QA/QC rules
 - `pipeline_exec.ipynb` — runs the full pipeline step by step, for inspecting each stage's output
