@@ -3,11 +3,9 @@ __pycache__/
 .pytest_cache/
 data/raw/owid-co2-data.csv
 data/raw/portfolio_landing.csv
-.ipynb_checkpoints/
-.DS_Store
+data/raw/portfolio_landing_api.csv
 .ipynb_checkpoints/
 .DS_Store
 Documentation.pages
 .virtual_documents/
-data/raw/portfolio_landing_api.csv
-*.png
+Screenshot 2026-09-04 at 9.50.45 PM.png
