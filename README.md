@@ -1,89 +1,86 @@
-# ESG Portfolio Emissions Pipeline
+# ESG Emissions Data Pipeline & Quality Framework
 
-A small ETL pipeline that ingests emissions data, runs QA/QC, computes
-ESG KPIs, and serves them through a dashboard. Built as a scoped demo
-of the kind of ESG data value chain used in bank risk/reporting functions
-(ingestion → validation → KPI computation → reporting).
+A compact ETL pipeline that ingests emissions/GDP data, runs automated
+QA/QC, computes portfolio-level ESG KPIs, and serves them through an
+interactive dashboard — built as a scoped demo of the kind of data
+value chain used in bank ESG/risk reporting functions.
 
-## Data
+## Data sources
 
-[Our World in Data CO2 & GHG dataset](https://github.com/owid/co2-data)
-(public, no auth required). Ten countries (Norway, Sweden, Denmark,
-Germany, UK, US, China, India, Brazil, Netherlands) are used as a
-stand-in **portfolio** of reporting entities — public corporate-level
-emissions data isn't freely available, so country-level data plays
-the same structural role a bank's counterparty exposure book would.
+Two interchangeable ingestion paths, both producing the same shape of data:
+
+- **[Our World in Data CO2 & GHG dataset](https://github.com/owid/co2-data)** — static CSV, no auth required
+- **World Bank REST API** — live pull via `EN.GHG.CO2.MT.CE.AR5` (CO2), `EN.GHG.ALL.MT.CE.AR5` (total GHG), and `NY.GDP.MKTP.CD` (GDP)
+
+Ten countries (Norway, Sweden, Denmark, Germany, UK, US, China, India,
+Brazil, Netherlands) stand in for the companies a bank might hold in
+its lending/investment portfolio — real corporate-level emissions data
+isn't freely available, so country-level data plays the same
+structural role.
 
 ## Architecture
 
 ```
-S3 (raw) --> Lambda (ingest + QA/QC + KPI) --> S3 (processed / errors / kpis)
-                                                          |
-                                                          v
-                                                  Plotly-Dash dashboard
+Raw data (OWID CSV or World Bank API)
+        │
+        ▼
+   QA/QC checks ──► rejected rows (with reason code)
+        │
+        ▼
+  KPI computation (pandas + SQL)
+        │
+        ▼
+  Plotly-Dash dashboard
 ```
 
-- `src/ingest.py` — loads raw data, filters to the tracked portfolio and year range
-- `src/qc_checks.py` — schema, completeness, range, and year-over-year consistency checks; rejects go to a separate table with a reason code, not silently dropped
-- `src/kpi.py` — computes portfolio KPIs from QA-passed data
-- `src/lambda_function.py` — AWS Lambda handler; same logic as above, wired to S3 via `boto3`, triggered on new file upload
-- `src/run_local.py` — runs the full pipeline against local files (used to validate logic without live AWS access)
-- `dashboard/app.py` — Plotly-Dash dashboard over the KPI outputs
+- `src/ingest.py` — loads the OWID CSV, filters to the tracked portfolio and year range
+- `src/api_ingest.py` — same output shape, pulled live from the World Bank API instead
+- `src/qc_checks.py` — schema, range, and year-over-year consistency checks; computes both a **completeness** score (missing values) and a **validity** score (rows that passed every check) per entity
+- `src/kpi.py` — portfolio KPIs from QA-passed data, in pandas
+- `src/db.py` — the same KPIs recomputed in **SQL** (SQLite), including a window-function version of the YoY calculation, cross-checked against the pandas output
+- `dashboard/app.py` — interactive Plotly-Dash dashboard (year/country filters, validity threshold shown on-chart)
 - `tests/test_qc_checks.py` — unit tests for the QA/QC rules
-
-**Note on AWS:** `lambda_function.py` is written to run against real S3
-via `boto3` but has not been executed against a live AWS account —
-this was built in an environment without AWS network access. The
-pipeline logic itself is validated locally (`run_local.py`, `pytest`)
-using the same functions the Lambda handler calls; only the storage
-layer (local disk vs. S3) differs. Deploy and smoke-test in your own
-AWS account before relying on it in production.
+- `pipeline_exec.ipynb` — runs the full pipeline step by step, for inspecting each stage's output
 
 ## KPIs
 
 | KPI | Description |
 |---|---|
-| Total CO2 by entity | Latest-year emissions, ranked — portfolio exposure snapshot |
+| Total CO2 by entity | Ranked emissions for a selected year |
 | Emissions intensity (CO2 / GDP) | Proxy for transition risk per unit of economic output |
-| YoY % change | Year-over-year emissions trend per entity |
-| Portfolio total GHG | Aggregate GHG across the whole tracked portfolio, over time |
-| Data completeness score | Share of non-null fields per entity — flags entities with weaker disclosure |
+| YoY % change | Year-over-year emissions trend, ±10% flagged on-chart |
+| Portfolio total GHG | Aggregate GHG across the tracked portfolio, over time |
+| Data completeness score | Share of non-null fields per entity |
+| Data validity score | Share of records per entity passing *all* QA/QC checks — distinct from completeness, since a field can be non-null and still be invalid |
 
 ## QA/QC checks
 
 - **Schema check** — required fields (`country`, `year`, `co2`, `total_ghg`) present
 - **Range check** — no physically implausible values (e.g. negative emissions)
-- **Consistency check** — year-over-year change beyond a 50% threshold is flagged for review rather than auto-accepted (likely a reporting break, not a real shift)
-- **Completeness score** — computed and surfaced as a KPI in its own right
+- **Consistency check** — year-over-year change beyond 10% is flagged for review (chosen deliberately strict to demonstrate the mechanism — real historical volatility in this portfolio tops out around 18%)
+- **Completeness & validity scores** — both computed and surfaced as their own KPIs
 
 ## Running locally
 
 ```bash
 pip install -r requirements.txt
-python src/run_local.py       # runs ingest -> qc -> kpi against local files
-python dashboard/app.py       # serves dashboard at http://127.0.0.1:8050
-pytest tests/                 # runs QA/QC unit tests
 ```
 
-## Deploying the Lambda (outline)
+Then work through `pipeline_exec.ipynb` (ingest or api_ingest → qc_checks → kpi → db), or run the dashboard directly once KPI files exist:
 
 ```bash
-aws s3 mb s3://<raw-bucket>
-aws s3 mb s3://<output-bucket>
-# package src/ (with dependencies) and deploy:
-aws lambda create-function \
-  --function-name esg-pipeline \
-  --runtime python3.12 \
-  --handler lambda_function.handler \
-  --environment Variables="{OUTPUT_BUCKET=<output-bucket>}" \
-  --zip-file fileb://deployment.zip \
-  --role <execution-role-arn>
-# attach an S3 trigger on <raw-bucket> for ObjectCreated events
+python dashboard/app.py       # serves at http://127.0.0.1:8050
+pytest tests/                 # QA/QC unit tests
 ```
 
 ## Future improvements
 
-- Orchestrate with **Airflow** instead of a single Lambda, for retries/backfills and dependency management across steps
-- Add **dbt** models for the transformation layer, for lineage and testable SQL
-- Replace country-level proxy data with a real corporate emissions dataset (e.g. CDP disclosures) if licensing allows
-- Add data drift monitoring (flag when completeness or YoY-flag rates shift over time, not just per-run)
+- AWS deployment (Lambda + S3), in progress on a separate branch
+- Orchestrate with **Airflow** instead of manual notebook steps, for retries/backfills
+- Add **dbt** models for the transformation layer
+- Replace country-level proxy data with real corporate emissions data (e.g. CDP) if licensing allows
+- Data drift monitoring across pipeline runs, not just within one
+
+## Dashboard
+
+![Dashboard screenshot](Emissions_Dashboard_03-09-2026.png)
