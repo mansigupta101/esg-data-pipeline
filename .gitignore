@@ -9,3 +9,8 @@ data/raw/portfolio_landing_api.csv
 Documentation.pages
 .virtual_documents/
 Screenshot 2026-09-04 at 9.50.45 PM.png
+rsa_key.p8
+rsa_key.pub
+.env
+rsa_key.p8
+rsa_key.pub

@@ -1,0 +1,11 @@
+entity_id,entity_name,region,category,latest_reporting_year
+NOR,Norway,Europe,High income,2023
+SWE,Sweden,Europe,High income,2023
+DNK,Denmark,Europe,High income,2023
+DEU,Germany,Europe,High income,2023
+GBR,United Kingdom,Europe,High income,2023
+USA,United States,North America,High income,2023
+CHN,China,Asia,Upper middle income,2023
+IND,India,Asia,Lower middle income,2023
+BRA,Brazil,South America,Upper middle income,2023
+NLD,Netherlands,Europe,High income,2023
