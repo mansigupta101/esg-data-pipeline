@@ -14,3 +14,4 @@ rsa_key.pub
 .env
 rsa_key.p8
 rsa_key.pub
+test_gemini.py
