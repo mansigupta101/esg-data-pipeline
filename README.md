@@ -1,85 +1,71 @@
-# ESG Emissions Data Pipeline & Quality Framework
+# ESG Emissions Analytics | Python · Snowflake · Power BI · Gemini
 
-A compact ETL pipeline that ingests emissions/GDP data, runs automated QA/QC, 
-computes portfolio-level ESG KPIs, and serves them through an interactive dashboard. 
-Built as a scoped demo of a data value chain used in portfolio risk exposure reporting functions.
+An end-to-end emissions analytics project combining **data engineering, quality assurance, interactive BI, and AI-generated commentary**. It tracks emissions and economic indicators for **10 countries used as proxies for portfolio entities**, demonstrating portfolio-exposure reporting rather than corporate emissions accounting.
 
-## Data sources
+## What it delivers
 
-Two interchangeable ingestion paths, both producing the same shape of data:
-
-- **[Our World in Data CO2 & GHG dataset](https://github.com/owid/co2-data)** — static CSV, no auth required
-- **World Bank REST API** — live pull via `EN.GHG.CO2.MT.CE.AR5` (CO2), `EN.GHG.ALL.MT.CE.AR5` (total GHG), and `NY.GDP.MKTP.CD` (GDP)
-
-Ten countries (Norway, Sweden, Denmark, Germany, UK, US, China, India,
-Brazil, Netherlands) stand in for the companies a bank might hold in
-its lending/investment portfolio — real corporate-level emissions data
-isn't freely available, so country-level data plays the same
-structural role.
+- **Emissions analytics:** CO₂ and GHG trends, country contributions to annual changes, GDP-based carbon intensity, and CO₂–GDP growth comparisons.
+- **Data quality:** Completeness, QA pass rates, anomaly flags, and annual country coverage.
+- **AI insights:** Short, entity-level Gemini summaries generated from Snowflake KPIs and displayed in Power BI. Summaries are **pre-generated**, not live API responses to report filters.
 
 ## Architecture
 
+```text
+OWID emissions data ──► Python ingestion ──► QA/QC ──► Star-schema CSVs
+                                               │
+                                               ▼
+                                            Snowflake
+                                               ├──► Power BI dashboards
+                                               └──► Python + Gemini API
+                                                          │
+                                                          ▼
+                                                    AI_SUMMARY ──► Power BI
 ```
-Raw data (OWID CSV or World Bank API)
-        │
-        ▼
-   QA/QC checks ──► rejected rows (with reason code)
-        │
-        ▼
-  KPI computation (pandas + SQL)
-        │
-        ▼
-  Plotly-Dash dashboard
-```
 
-- `src/ingest.py` — loads the OWID CSV, filters to the tracked portfolio and year range
-- `src/api_ingest.py` — same output shape, pulled live from the World Bank API instead
-- `src/qc_checks.py` — schema, range, and year-over-year consistency checks; computes both a **completeness** score (missing values) and a **validity** score (rows that passed every check) per entity
-- `src/kpi.py` — portfolio KPIs from QA-passed data, in pandas
-- `src/db.py` — the same KPIs recomputed in **SQL** (SQLite), including LAG() (a built-in window-function) for YoY calculation, cross-checked against the pandas output
-- `dashboard/app.py` — interactive Plotly-Dash dashboard (year/country filters, validity threshold shown on-chart)
-- `tests/test_qc_checks.py` — unit tests for the QA/QC rules
-- `pipeline_exec.ipynb` — runs the full pipeline step by step, for inspecting each stage's output
+**Core stack:** Python (pandas), SQL, Snowflake, Power BI, DAX, REST APIs, Gemini API, pytest.
 
-## KPIs
+The pipeline uses [Our World in Data](https://github.com/owid/co2-data) for its primary emissions dataset. A separate [World Bank API](https://api.worldbank.org/) ingestion script supports GDP and emissions indicators; it should not be mistaken for an automatically integrated fallback in the original QA pipeline.
 
-| KPI | Description |
+## Power BI report
+
+| Page | Focus |
 |---|---|
-| Total CO2 by entity | Ranked emissions for a selected year |
-| Emissions intensity (CO2 / GDP) | Proxy for transition risk per unit of economic output |
-| YoY % change | Year-over-year emissions trend, ±10% flagged on-chart |
-| Portfolio total GHG | Aggregate GHG across the tracked portfolio, over time |
-| Data completeness score | Share of non-null fields per entity |
-| Data validity score | Share of records per entity passing *all* QA/QC checks; different from completeness score, as a field can be non-null and still be invalid |
+| Executive Overview | Portfolio KPIs, country ranking, historical emissions and CO₂–GDP growth |
+| Emissions Analysis | Country intensity, YoY changes and contribution waterfall |
+| Data Quality Monitoring | Completeness, QA failures and reporting coverage |
+| QA Details | Entity-year validation outcomes |
+| AI Insights | Gemini-generated commentary for each entity's latest validated year |
 
-## QA/QC checks
+[View Power BI Dashboard & AI Insights](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)
 
-- **Schema check** — required fields (`country`, `year`, `co2`, `total_ghg`) present
-- **Range check** — no physically implausible values (e.g. negative emissions)
-- **Consistency check** — year-over-year change beyond 10% is flagged for review (chosen deliberately strict to demonstrate the data quality assurance mechanism, real historical volatility in this portfolio tops out around 18%)
-- **Completeness & validity scores** — both computed and surfaced as their own KPIs
+## How it works
 
-## To Run locally
+1. `src/ingest.py` prepares the OWID country-year dataset; `src/api_ingest.py` provides an alternative World Bank API pull.
+2. `src/qc_checks.py` checks required fields, value ranges and annual changes.
+3. `src/star_schema.py` produces `DimEntity`, `DimDate`, `FactEmissions` and `FactDataQuality`.
+4. `src/snowflake_loader.py` loads the tables to Snowflake.
+5. `src/ai_commentary.py` sends validated KPI payloads to `gemini-3.1-flash-lite` and stores outputs in `AI_SUMMARY`.
+
+### Run locally
+
+Set up Snowflake credentials and `GEMINI_API_KEY` in a local `.env` file (**never commit credentials**), then run:
 
 ```bash
 pip install -r requirements.txt
+python src/ingest.py
+python src/qc_checks.py
+python src/star_schema.py
+python src/snowflake_loader.py
+python src/ai_commentary.py
+pytest tests/
 ```
 
-Then work through `pipeline_exec.ipynb` (ingest or api_ingest → qc_checks → kpi → db), or run the dashboard directly once KPI files exist:
+Refresh the Power BI report after loading Snowflake tables. The loader **overwrites** the target star-schema tables on reruns.
 
-```bash
-python dashboard/app.py       # serves at http://127.0.0.1:8050
-pytest tests/                 # QA/QC unit tests
-```
+## Interpretation and limitations
 
-## Future improvements
+- Countries are **proxies**, not actual financed companies; CO₂/GDP is an economic carbon-intensity metric, not a financed-emissions measure.
+- The current QA rule **excludes** records with absolute YoY CO₂ changes above 10%, including potentially genuine changes. This can distort year-to-year comparisons when country coverage varies; the report surfaces coverage to make this visible.
+- Missing GDP observations affect intensity analysis, and AI commentary is limited to the supplied KPI data. Outputs are informational and not independently verified.
 
-- AWS deployment (Lambda + S3), in progress on a separate branch
-- Orchestrate with **Airflow** instead of manual notebook steps, for retries/backfills
-- Add **dbt** models for the transformation layer
-- Replace country-level proxy data with real corporate emissions data (e.g. CDP) if licensing allows
-- Data drift monitoring across pipeline runs, not just within one
-
-## Dashboard
-
-![Dashboard screenshot](Emissions_Dashboard_03-09-2026.png)
+**Planned improvements:** Reclassify unusual YoY changes as review flags rather than automatic exclusions; complete and validate the GDP backfill; quantify the impact of QA exclusions on emissions trends.
