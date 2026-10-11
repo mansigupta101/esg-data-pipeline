@@ -1,4 +1,4 @@
-# ESG Emissions Analytics | Python · Snowflake · Power BI · Gemini
+# ESG Emissions Analytics & Integrated AI-Augmented Insights
 
 An end-to-end emissions analytics project combining **data engineering, quality assurance, interactive BI, and AI-generated commentary**. It tracks emissions and economic indicators for **10 countries used as proxies for portfolio entities**, demonstrating portfolio-exposure reporting rather than corporate emissions accounting.
 
