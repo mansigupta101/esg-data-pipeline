@@ -57,8 +57,21 @@ def _load_full(processed_path, errors_path):
 
 
 def build_dim_entity(full):
-    """One row per entity: id, name, region, category, latest year seen."""
-    latest_year = full.groupby("country")["year"].max()
+    """
+    One row per entity: id, name, region, category, latest VALIDATED
+    (QA-passed) year.
+
+    latest_reporting_year must come from passed rows only. A country's most
+    recent row can be QA-rejected (e.g. Germany 2023, rejected for
+    yoy_jump_exceeds_threshold) while still being the most recent row in
+    `full` overall -- using full's max year in that case would point at a
+    year with no corresponding FactEmissions row, breaking anything that
+    joins DIM_ENTITY to FactEmissions on this field (including the
+    "Latest Reporting Year" KPI card itself, which would show a year with
+    no actual emissions data behind it).
+    """
+    passed = full[full["reject_reason"] == ""]
+    latest_year = passed.groupby("country")["year"].max()
     rows = []
     for country, (region, income_group) in ENTITY_ATTRS.items():
         if country not in latest_year.index:
