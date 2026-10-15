@@ -109,6 +109,6 @@ pytest tests/                 # QA/QC unit tests
 - Data drift monitoring across pipeline runs, not just within one
 
 
-## Dashboard - Plotly Dash [main] 
+## Dashboard - Plotly Dash
 
 <img src="Emissions_Dashboard_03-09-2026.png" width="600" alt="Original Plotly Dashboard">
