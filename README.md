@@ -100,7 +100,7 @@ python dashboard/app.py       # serves at http://127.0.0.1:8050
 pytest tests/                 # QA/QC unit tests
 ```
 
-## Future improvements
+### Future improvements
 
 - AWS deployment (Lambda + S3), in progress on a separate branch
 - Orchestrate with **Airflow** instead of manual notebook steps, for retries/backfills
@@ -109,6 +109,6 @@ pytest tests/                 # QA/QC unit tests
 - Data drift monitoring across pipeline runs, not just within one
 
 
-## Dashboard - Plotly Dash
+### Interactive Dashboard - Plotly Dash [Preview]
 
 <img src="Emissions_Dashboard_03-09-2026.png" width="600" alt="Original Plotly Dashboard">
