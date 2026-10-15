@@ -38,6 +38,12 @@ The pipeline uses [Our World in Data](https://github.com/owid/co2-data) for its 
 
 [View Power BI Dashboard & AI Insights](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)
 
+### Dashboard Preview
+
+| Executive Overview | Emissions Analysis | Data Quality | QA Details | AI Insights |
+|---|---|---|---|---|
+| <img src="powerbi/screenshots/executive_overview.png" width="350"> | <img src="powerbi/screenshots/emissions_analysis.png" width="350"> | <img src="powerbi/screenshots/data_quality.png" width="350"> | <img src="powerbi/screenshots/qa_details.png" width="350"> | <img src="powerbi/screenshots/ai_insights.png" width="350"> |
+
 ## How it works
 
 1. `src/ingest.py` prepares the OWID country-year dataset; `src/api_ingest.py` provides an alternative World Bank API pull.
