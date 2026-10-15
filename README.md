@@ -1,6 +1,7 @@
 # ESG Emissions Analytics & Integrated AI-Augmented Insights
 
-An end-to-end emissions analytics project combining **data engineering, quality assurance, interactive BI, and AI-generated commentary**. It tracks emissions and economic indicators for **10 countries used as proxies for portfolio entities**, demonstrating portfolio-exposure reporting rather than corporate emissions accounting.
+An end-to-end ESG emissions analytics project integrating **data engineering, automated QA/QC, Snowflake-based data modelling, interactive Power BI reporting, and Gemini-powered insights**. Using emissions and economic indicators across **10 countries as portfolio proxies**. 
+The project demonstrates emissions exposure monitoring, carbon-intensity analysis, trend decomposition, and data-driven decision support.
 
 ## What it delivers
 
