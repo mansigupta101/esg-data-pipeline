@@ -88,8 +88,14 @@ The extension includes five report pages covering portfolio emissions, country-l
 
 ### Power BI Dashboard Previews
 
-<a href="https://github.com/mansigupta101/esg-data-pipeline/blob/feature/powerbi-ai-analytics/powerbi/screenshots/executive_overview.png"><img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/refs/heads/feature/powerbi-ai-analytics/powerbi/screenshots/executive_overview.png" width="190" alt="Executive Overview"></a> <a href="https://github.com/mansigupta101/esg-data-pipeline/blob/feature/powerbi-ai-analytics/powerbi/screenshots/emissions_analysis.png"><img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/refs/heads/feature/powerbi-ai-analytics/powerbi/screenshots/emissions_analysis.png" width="190" alt="Emissions Analysis"></a> <a href="https://github.com/mansigupta101/esg-data-pipeline/blob/feature/powerbi-ai-analytics/powerbi/screenshots/data_quality.png"><img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/refs/heads/feature/powerbi-ai-analytics/powerbi/screenshots/data_quality.png" width="190" alt="Data Quality Monitoring"></a> <a href="https://github.com/mansigupta101/esg-data-pipeline/blob/feature/powerbi-ai-analytics/powerbi/screenshots/ai_insights.png"><img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/refs/heads/feature/powerbi-ai-analytics/powerbi/screenshots/ai_insights.png" width="190" alt="AI Insights"></a>
-
+<p align="center">
+  <a href="https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics/powerbi/screenshots">
+    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p1_executive_overview.png" width="190" alt="Executive Overview">
+    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p2_emissions_analysis.png" width="190" alt="Emissions Analysis">
+    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p3_data_quality.png" width="190" alt="Data Quality Monitoring">
+    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p5_ai_insights.png" width="190" alt="AI Insights">
+  </a>
+</p>
 **[Explore the Power BI & AI Analytics Extension →](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)**
 
 ## Dashboard
