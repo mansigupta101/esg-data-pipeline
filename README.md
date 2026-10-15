@@ -4,7 +4,7 @@ A compact ETL pipeline that ingests emissions/GDP data, runs automated QA/QC,
 computes portfolio-level ESG KPIs, and serves them through an interactive dashboard. 
 Built as a scoped demo of a data value chain used in portfolio risk exposure reporting functions.
 
-### Power BI & AI Analytics Extension
+### New Feature: Power BI & AI Analytics Extension
 
 The project has been extended with **Snowflake-backed Power BI dashboards** and **Gemini-generated emissions commentary**, developed separately on the [`feature/powerbi-ai-analytics` branch](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics).
 
@@ -18,6 +18,8 @@ The project has been extended with **Snowflake-backed Power BI dashboards** and 
   </a>
 </p>
 **[Explore the Power BI & AI Analytics Extension →](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)**
+
+Main branch details cont...
 
 ## Data sources
 
