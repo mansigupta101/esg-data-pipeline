@@ -4,6 +4,21 @@ A compact ETL pipeline that ingests emissions/GDP data, runs automated QA/QC,
 computes portfolio-level ESG KPIs, and serves them through an interactive dashboard. 
 Built as a scoped demo of a data value chain used in portfolio risk exposure reporting functions.
 
+### Power BI & AI Analytics Extension
+
+The project has been extended with **Snowflake-backed Power BI dashboards** and **Gemini-generated emissions commentary**, developed separately on the [`feature/powerbi-ai-analytics` branch](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics).
+
+#### Power BI Dashboard Previews
+<p align="center">
+  <a href="https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics/powerbi/screenshots">
+    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p1_executive_overview.png" width="190" alt="Executive Overview">
+    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p2_emissions_analysis.png" width="190" alt="Emissions Analysis">
+    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p3_data_quality.png" width="190" alt="Data Quality Monitoring">
+    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p5_ai_insights.png" width="190" alt="AI Insights">
+  </a>
+</p>
+**[Explore the Power BI & AI Analytics Extension →](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)**
+
 ## Data sources
 
 Two interchangeable ingestion paths, both producing the same shape of data:
@@ -80,24 +95,7 @@ pytest tests/                 # QA/QC unit tests
 - Replace country-level proxy data with real corporate emissions data (e.g. CDP) if licensing allows
 - Data drift monitoring across pipeline runs, not just within one
 
-## Power BI & AI Analytics Extension
-
-The project has been extended with **Snowflake-backed Power BI dashboards** and **Gemini-generated emissions commentary**, developed separately on the [`feature/powerbi-ai-analytics` branch](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics).
-
-The extension includes five report pages covering portfolio emissions, country-level changes, carbon intensity, data quality, and entity-specific AI insights. Commentary is generated in batches and displayed interactively, rather than produced live on each click.
-
-### Power BI Dashboard Previews
-
-<p align="center">
-  <a href="https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics/powerbi/screenshots">
-    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p1_executive_overview.png" width="190" alt="Executive Overview">
-    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p2_emissions_analysis.png" width="190" alt="Emissions Analysis">
-    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p3_data_quality.png" width="190" alt="Data Quality Monitoring">
-    <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p5_ai_insights.png" width="190" alt="AI Insights">
-  </a>
-</p>
-**[Explore the Power BI & AI Analytics Extension →](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)**
 
 ## Dashboard - Plotly Dash [main] 
 
-![Dashboard screenshot](Emissions_Dashboard_03-09-2026.png)
+<img src="Emissions_Dashboard_03-09-2026.png" width="600" alt="Original Plotly Dashboard">
