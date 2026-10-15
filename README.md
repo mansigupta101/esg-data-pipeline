@@ -29,7 +29,7 @@ The project has been extended with <strong>Snowflake-backed Power BI dashboards<
 </em></sub>
 
 --------------------------
-#
+
 Main branch details cont...
 
 ## Data sources
