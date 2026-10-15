@@ -19,6 +19,8 @@ The project has been extended with **Snowflake-backed Power BI dashboards** and 
 </p>
 **[Explore the Power BI & AI Analytics Extension →](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)**
 
+
+
 Main branch details cont...
 
 ## Data sources
