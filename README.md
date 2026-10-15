@@ -86,6 +86,10 @@ The project has been extended with **Snowflake-backed Power BI dashboards** and 
 
 The extension includes five report pages covering portfolio emissions, country-level changes, carbon intensity, data quality, and entity-specific AI insights. Commentary is generated in batches and displayed interactively, rather than produced live on each click.
 
+### Power BI Dashboard Previews
+
+<a href="https://github.com/mansigupta101/esg-data-pipeline/blob/feature/powerbi-ai-analytics/powerbi/screenshots/executive_overview.png"><img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/refs/heads/feature/powerbi-ai-analytics/powerbi/screenshots/executive_overview.png" width="190" alt="Executive Overview"></a> <a href="https://github.com/mansigupta101/esg-data-pipeline/blob/feature/powerbi-ai-analytics/powerbi/screenshots/emissions_analysis.png"><img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/refs/heads/feature/powerbi-ai-analytics/powerbi/screenshots/emissions_analysis.png" width="190" alt="Emissions Analysis"></a> <a href="https://github.com/mansigupta101/esg-data-pipeline/blob/feature/powerbi-ai-analytics/powerbi/screenshots/data_quality.png"><img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/refs/heads/feature/powerbi-ai-analytics/powerbi/screenshots/data_quality.png" width="190" alt="Data Quality Monitoring"></a> <a href="https://github.com/mansigupta101/esg-data-pipeline/blob/feature/powerbi-ai-analytics/powerbi/screenshots/ai_insights.png"><img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/refs/heads/feature/powerbi-ai-analytics/powerbi/screenshots/ai_insights.png" width="190" alt="AI Insights"></a>
+
 **[Explore the Power BI & AI Analytics Extension →](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)**
 
 ## Dashboard
