@@ -42,7 +42,7 @@ The pipeline uses [Our World in Data](https://github.com/owid/co2-data) for its 
 
 | Executive Overview | Emissions Analysis | Data Quality | QA Details | AI Insights |
 |---|---|---|---|---|
-| <img src="powerbi/screenshots/executive_overview.png" width="350"> | <img src="powerbi/screenshots/emissions_analysis.png" width="350"> | <img src="powerbi/screenshots/data_quality.png" width="350"> | <img src="powerbi/screenshots/qa_details.png" width="350"> | <img src="powerbi/screenshots/ai_insights.png" width="350"> |
+| <img src="powerbi/screenshots/p1_executive_overview.png" width="350"> | <img src="powerbi/screenshots/p2_emissions_analysis.png" width="350"> | <img src="powerbi/screenshots/p3_data_quality.png" width="350"> | <img src="powerbi/screenshots/p4_qa_details.png" width="350"> | <img src="powerbi/screenshots/p5_ai_insights.png" width="350"> |
 
 ## How it works
 
