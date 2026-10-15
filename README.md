@@ -4,11 +4,17 @@ A compact ETL pipeline that ingests emissions/GDP data, runs automated QA/QC,
 computes portfolio-level ESG KPIs, and serves them through an interactive dashboard. 
 Built as a scoped demo of a data value chain used in portfolio risk exposure reporting functions.
 
-### New Feature: Power BI & AI Analytics Extension
 
-The project has been extended with **Snowflake-backed Power BI dashboards** and **Gemini-generated emissions commentary**, developed separately on [`feature/powerbi-ai-analytics` branch](https://github.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics).
+--------------------------
+<h3><em>New Feature: Power BI &amp; AI Analytics Extension</em></h3>
 
-#### Power BI Dashboard Previews
+<sub><em>
+The project has been extended with <strong>Snowflake-backed Power BI dashboards</strong> and <strong>Gemini-generated emissions commentary</strong>, developed separately on the
+<a href="https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics">feature/powerbi-ai-analytics branch</a>.
+</em></sub>
+
+<h4><em>Power BI Dashboard Previews</em></h4>
+
 <p align="center">
   <a href="https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics/powerbi/screenshots">
     <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p1_executive_overview.png" width="190" alt="Executive Overview">
@@ -17,10 +23,13 @@ The project has been extended with **Snowflake-backed Power BI dashboards** and 
     <img src="https://raw.githubusercontent.com/mansigupta101/esg-data-pipeline/feature/powerbi-ai-analytics/powerbi/screenshots/p5_ai_insights.png" width="190" alt="AI Insights">
   </a>
 </p>
-**[Explore the Power BI & AI Analytics Extension →](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)**
 
+<sub><em>
+<a href="https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics"><strong>Explore the Power BI &amp; AI Analytics Extension →</strong></a>
+</em></sub>
 
-
+--------------------------
+#
 Main branch details cont...
 
 ## Data sources
