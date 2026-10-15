@@ -9,7 +9,7 @@ Built as a scoped demo of a data value chain used in portfolio risk exposure rep
 <h3><em>New Feature: Power BI &amp; AI Analytics Extension</em></h3>
 
 <sub><em>
-The project has been extended with <strong>Snowflake-backed Power BI dashboards</strong> and <strong>Gemini-generated emissions commentary</strong>, developed separately on the
+The project has been extended with <strong>Snowflake-backed Power BI dashboards</strong> and <strong>GEMINI-GENERATED emissions commentary</strong>, developed separately on the
 <a href="https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics">feature/powerbi-ai-analytics branch</a>.
 </em></sub>
 
