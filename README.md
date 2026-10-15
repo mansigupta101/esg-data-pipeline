@@ -6,7 +6,7 @@ An end-to-end emissions analytics project combining **data engineering, quality 
 
 - **Emissions analytics:** CO₂ and GHG trends, country contributions to annual changes, GDP-based carbon intensity, and CO₂–GDP growth comparisons.
 - **Data quality:** Completeness, QA pass rates, anomaly flags, and annual country coverage.
-- **AI insights:** Short, entity-level Gemini summaries generated from Snowflake KPIs and displayed in Power BI. Summaries are **pre-generated**, not live API responses to report filters.
+- **AI insights:** Short, entity-level Gemini summaries generated from Snowflake KPIs and displayed in Power BI. 
 
 ## Architecture
 
