@@ -80,6 +80,14 @@ pytest tests/                 # QA/QC unit tests
 - Replace country-level proxy data with real corporate emissions data (e.g. CDP) if licensing allows
 - Data drift monitoring across pipeline runs, not just within one
 
+## Power BI & AI Analytics Extension
+
+The project has been extended with **Snowflake-backed Power BI dashboards** and **Gemini-generated emissions commentary**, developed separately on the [`feature/powerbi-ai-analytics` branch](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics).
+
+The extension includes five report pages covering portfolio emissions, country-level changes, carbon intensity, data quality, and entity-specific AI insights. Commentary is generated in batches and displayed interactively, rather than produced live on each click.
+
+**[Explore the Power BI & AI Analytics Extension →](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)**
+
 ## Dashboard
 
 ![Dashboard screenshot](Emissions_Dashboard_03-09-2026.png)
