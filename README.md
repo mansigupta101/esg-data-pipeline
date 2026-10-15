@@ -1,6 +1,6 @@
 # ESG Emissions Analytics & Integrated AI-Augmented Insights
 
-An end-to-end ESG emissions analytics project integrating **data engineering, automated quality assurance, interactive Power BI dashboard, and Gemini-powered AI insights**. The project demonstrates portfolio-exposure risk exposure using emissions and economic indicators across 10 countries as portfolio proxies, including monitoring, carbon-intensity analysis, trend decomposition, and data-driven decision support.
+An end-to-end ESG emissions analytics project integrating **data engineering, automated quality assurance, interactive Power BI dashboard, and Gemini-powered AI insights**. <br> The project demonstrates portfolio-exposure risk exposure using emissions and economic indicators across 10 countries as portfolio proxies, including monitoring, carbon-intensity analysis, trend decomposition, and data-driven decision support.
 
 ## What it delivers
 
