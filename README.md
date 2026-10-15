@@ -98,6 +98,6 @@ The extension includes five report pages covering portfolio emissions, country-l
 </p>
 **[Explore the Power BI & AI Analytics Extension →](https://github.com/mansigupta101/esg-data-pipeline/tree/feature/powerbi-ai-analytics)**
 
-## Dashboard
+## Dashboard - Plotly Dash [main] 
 
 ![Dashboard screenshot](Emissions_Dashboard_03-09-2026.png)
